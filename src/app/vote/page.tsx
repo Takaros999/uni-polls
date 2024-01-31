@@ -1,25 +1,47 @@
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { NextPage } from "next";
 import { hasUserVoted } from "@/services/pollEntry.service";
+import { isUserVerified } from "@/services/profile.service";
 import { redirect } from "next/navigation";
 
 const VotePage: NextPage = withPageAuthRequired(
   async () => {
-    const hasVoted = await hasUserVoted();
+    const [hasVoted, isVerified] = await Promise.all([
+      hasUserVoted(),
+      isUserVerified(),
+    ]);
     if (hasVoted) redirect("/my-vote");
+    throw new Error("test");
+
+    if (!isVerified) {
+      return (
+        <main className="flex min-h-screen flex-col justify-start items-center bg-base-200  ">
+          <div className="hero my-10">
+            <div className="hero-content text-center">
+              <div className="max-w-md">
+                <h1 className="text-3xl md:text-4xl whitespace-nowrap	mb-4 font-bold">
+                  Επιβεβαίωσε το email σου.
+                </h1>
+                <p className="text-sm">
+                  Για να συμμετάσχεις στην δημοσκόπηση, πρέπει να να
+                  επιβεβαιώσεις το email σου.
+                </p>
+              </div>
+            </div>
+          </div>
+        </main>
+      );
+    }
 
     return (
       <main className="flex min-h-screen flex-col justify-start items-center bg-base-200  ">
         <div className="hero  my-10">
           <div className="hero-content text-center">
             <div className="max-w-md">
-              <h1 className="text-5xl font-bold">
-                Φοιτητική Δημοκρατία σε Δράση
+              <h1 className="text-3xl md:text-4xl whitespace-nowrap	mb-4 font-bold">
+                Η γνώμη σου μετράει
               </h1>
-              <p className="text-sm py-6">
-                Η ψήφος σου είναι ανώνυμη και δεν προσμετράται στην επίσημη
-                ψηφοφορία.
-              </p>
+              <p className="text-sm">Η ψήφος σου είναι ανώνυμη.</p>
             </div>
           </div>
         </div>

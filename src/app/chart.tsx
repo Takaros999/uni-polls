@@ -20,6 +20,7 @@ ChartJS.register(
 );
 const legendMargin = {
   id: "legendMargin",
+  // @ts-expect-error
   beforeInit: function (chart) {
     const fitValue = chart.legend.fit;
     chart.legend.fit = function fit() {
@@ -37,6 +38,7 @@ export const options = {
       ticks: {
         // Ensure the ticks are integers
         stepSize: 1,
+        // @ts-expect-error
         callback: function (value) {
           if (value % 1 === 0) {
             return value;

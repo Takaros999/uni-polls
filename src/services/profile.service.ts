@@ -37,3 +37,9 @@ export const isUserAuthenticated = async (): Promise<boolean> => {
 
   return !!session;
 };
+
+export const isUserVerified = async (): Promise<boolean> => {
+  const session = await getSession();
+
+  return Boolean(session?.user?.email_verified);
+};

@@ -19,7 +19,7 @@ const afterCallback = async (
 
   session.user.supabaseAccessToken = jwt.sign(
     payload,
-    process.env.SUPABASE_SIGNING_SECRET
+    process.env.SUPABASE_SIGNING_SECRET as string
   );
 
   return session;
@@ -28,9 +28,10 @@ const afterCallback = async (
 export const GET = handleAuth({
   async callback(req: NextApiRequest, res: NextApiResponse) {
     try {
+      // @ts-expect-error
       return await handleCallback(req, res, { afterCallback });
     } catch (error) {
-      console.log(error);
+      // @ts-expect-error
       res.status(error.status || 500).end(error.message);
     }
   },
