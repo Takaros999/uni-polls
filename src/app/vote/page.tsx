@@ -11,7 +11,6 @@ const VotePage: NextPage = withPageAuthRequired(
       isUserVerified(),
     ]);
     if (hasVoted) redirect("/my-vote");
-    throw new Error("test");
 
     if (!isVerified) {
       return (
